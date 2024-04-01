@@ -7,7 +7,7 @@ operacao = None
 ordem = []
 opcoes = ["ab", "ac", "ba", "bc", "ca", "cb"]
 
-n = 7
+n = 3
 contador = n
 
 lista = []
