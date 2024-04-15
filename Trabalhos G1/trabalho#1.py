@@ -1,6 +1,3 @@
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import A4
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 import urllib.request
 import os
 
@@ -96,7 +93,7 @@ def desvio_padrao(lista):
     return result
 
 
-def apresenta_resultados_terminal():
+def apresenta_resultados():
     dados = busca_dados()
     if dados:
         print("---Percentual:---")
@@ -144,54 +141,6 @@ def apresenta_resultados_terminal():
         print("----Mínimo")
         print(f"    Macho: {menor(idade_m):.2f}")
         print(f"    Fêmea: {menor(idade_f):.2f}")
-    else:
-        print("Não foi possível obter os dados.")
-
-
-def apresenta_resultados():
-    dados = busca_dados()
-    if dados:
-        # Preparando os dados
-        porcentagens = percentual_por_repeticao(dados["Sexo"])
-        peso_m = filtro_com_base("M", dados["Sexo"], dados["Peso"])
-        peso_f = filtro_com_base("F", dados["Sexo"], dados["Peso"])
-        idade_m = filtro_com_base("M", dados["Sexo"], dados["Idade"])
-        idade_f = filtro_com_base("F", dados["Sexo"], dados["Idade"])
-
-        # Criando o documento PDF
-        doc = SimpleDocTemplate("resultados.pdf", pagesize=A4)
-        elements = []
-
-        # Dados para a tabela
-        data = [
-            ["", "Macho", "Fêmea", "Todos"],
-            ["Percentual", f"{porcentagens['M']}", f"{porcentagens['F']}", ""],
-            ["Média Peso", f"{media(peso_m):.2f}", f"{media(peso_f):.2f}", ""],
-            ["Média Idade", f"{media(idade_m):.2f}", f"{media(idade_f):.2f}", ""],
-            ["Desvio Padrão Peso", f"{desvio_padrao(peso_m):.2f}", f"{desvio_padrao(peso_f):.2f}", f"{desvio_padrao(dados['Peso']):.2f}"],
-            ["Desvio Padrão Idade", f"{desvio_padrao(idade_m):.2f}", f"{desvio_padrao(idade_f):.2f}", f"{desvio_padrao(dados['Idade']):.2f}"],
-            ["Máximo Peso", f"{maior(peso_m):.2f}", f"{maior(peso_f):.2f}", ""],
-            ["Mínimo Peso", f"{menor(peso_m):.2f}", f"{menor(peso_f):.2f}", ""],
-            ["Máximo Idade", f"{maior(idade_m):.2f}", f"{maior(idade_f):.2f}", ""],
-            ["Mínimo Idade", f"{menor(idade_m):.2f}", f"{menor(idade_f):.2f}", ""]
-        ]
-
-        # Criando a tabela
-        table = Table(data, colWidths=[100, 50, 50, 50])
-
-        # Estilo da tabela
-        style = TableStyle([('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-                            ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-                            ('ALIGNMENT', (0, 0), (-1, -1), 'CENTER'),
-                            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                            ('BACKGROUND', (0, 1), (-1, -1), colors.whitesmoke),
-                            ('GRID', (0, 1), (-1, -1), 1, colors.black)])
-
-        table.setStyle(style)
-        elements.append(table)
-
-        # Construindo o PDF
-        doc.build(elements)
     else:
         print("Não foi possível obter os dados.")
 
