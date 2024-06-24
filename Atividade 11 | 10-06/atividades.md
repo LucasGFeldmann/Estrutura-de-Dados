@@ -3,27 +3,9 @@
 1. Criar um set
 
 ```py
-def ex01():
-    sets = {0,1,2,3,4,5,6,7,8,9}
-    arr = [0,1,2,3,4,5,6,7,8,9]
-
-
-    print(sets, arr)
-
-    sets.pop()
-    arr.pop()
-
-    sets.pop()
-    arr.pop()
-
-    try:
-        sets.pop(0)
-        arr.pop(0)
-    except:
-        print("erro pop")
-
-    print(sets, arr)
-
+# Criando um Set em Python
+meu_set = {'nome', 32.00, 'Node', (6, 7)}
+print("Set:", meu_set)
 ```
 
 2. Criar uma list
