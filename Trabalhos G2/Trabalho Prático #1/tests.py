@@ -1,87 +1,125 @@
-from ternary_tree import *
+from ternary_tree import TernaryTree
 
-
-def test_classes():
-    errors = []
-
-    # Teste da classe Node
-    try:
-        node = Node(10)
-        assert node.value == 10
-        assert node.left == None
-        assert node.middle == None
-        assert node.right == None
-        assert repr(node) == "10 - 10|None || 10|None"
-    except Exception as e:
-        errors.append(f"Erro na classe Node: {e}")
-
-    # Teste da classe TernaryTree
-
+def test_insert():
     tree = TernaryTree()
-    assert tree.root == None
+    values = [10, 5, 20, 5, 15, 25, 5]
+    for value in values:
+        tree.insert(tree.root, value)
+    
+    assert tree.root.value == 10
+    assert tree.root.left.value == 5
+    assert tree.root.left.middle.value == 5
+    assert tree.root.left.middle.middle.value == 5
+    assert tree.root.right.value == 20
+    assert tree.root.right.left.value == 15
+    assert tree.root.right.right.value == 25
 
-    tree = TernaryTree(5)
-    assert tree.root.value == 5
-
-    node_root = Node(7)
-    tree = TernaryTree(node_root)
-    assert tree.root.value == 7
-
-    try:
-        tree = TernaryTree("not_allowed")
-    except TypeError:
-        pass  # Exceção esperada
-
+def test_search():
     tree = TernaryTree()
-    tree.insert(tree.root, 5)
-    tree.insert(tree.root, 3)
-    tree.insert(tree.root, 7)
-    tree.insert(tree.root, 5)  # valor duplicado
+    values = [10, 5, 20, 5, 15, 25, 5]
+    for value in values:
+        tree.insert(tree.root, value)
+    
+    assert tree.search(tree.root, 10).value == 10
+    assert tree.search(tree.root, 5).value == 5
+    assert tree.search(tree.root, 20).value == 20
+    assert tree.search(tree.root, 15).value == 15
+    assert tree.search(tree.root, 25).value == 25
 
-    assert tree.root.value == 5
-    assert tree.root.left.value == 3
-    assert tree.root.right.value == 7
-    assert tree.root.middle.value == 5
-
-    result = tree.search(tree.root, 7)
-    assert result == 7
-
-    result = tree.search(tree.root, 3)
-    assert result == 3
-
-    result = tree.search(tree.root, 5)
-    assert result == 5
-
-    node_to_delete = tree.root.left
-    tree.delete(node_to_delete)
-    assert tree.root.left == None
-
-    node_to_delete = tree.root.middle
-    tree.delete(node_to_delete)
-    assert tree.root.middle == None
-
-    # Testando as ordens de travessia
+def test_father():
     tree = TernaryTree()
-    values = [5, 3, 7, 2, 4, 6, 8]
+    values = [10, 5, 20, 5, 15, 25, 5]
+    for value in values:
+        tree.insert(tree.root, value)
+    
+    node_5 = tree.search(tree.root, 5)
+    assert tree.father(tree.root, node_5) == tree.root
+
+    node_15 = tree.search(tree.root, 15)
+    assert tree.father(tree.root, node_15) == tree.root.right
+
+def test_delete():
+    tree = TernaryTree()
+    values = [10, 5, 20, 5, 15, 25, 5]
+    for value in values:
+        tree.insert(tree.root, value)
+    
+    #tree.show
+    
+    node_5 = tree.search(tree.root, 20)
+    tree.delete(node_5)
+    
+    #tree.show
+
+    assert tree.search(tree.root, 20) is None
+
+def test_traversals():
+    tree = TernaryTree()
+    values = [10, 5, 20, 5, 15, 25, 5]
+    for value in values:
+        tree.insert(tree.root, value)
+
+    assert tree.inorder(tree.root) == [5, 5, 5, 10, 15, 20, 25]
+    assert tree.preorder(tree.root) == [10, 5, 5, 5, 20, 15, 25]
+    assert tree.postorder(tree.root) == [5, 5, 5, 15, 25, 20, 10]
+
+def test_make_tree():
+    tree = TernaryTree()
+    values = [10, 5, 20, 5, 15, 25, 5]
     tree.make_tree(values)
+    
+    assert tree.root.value == 10
+    assert tree.root.left.value == 5
+    assert tree.root.left.middle.value == 5
+    assert tree.root.left.middle.middle.value == 5
+    assert tree.root.right.value == 20
+    assert tree.root.right.left.value == 15
+    assert tree.root.right.right.value == 25
 
-    inorder_result = tree.inorder(tree.root)
-    assert inorder_result == [2, 3, 4, 5, 6, 7, 8]
+def test_show():
+    tree = TernaryTree()
+    values = [10, 5, 20, 5, 15, 25, 5]
+    tree.make_tree(values)
+    tree.show
 
-    preorder_result = tree.preorder(tree.root)
-    assert preorder_result == [5, 3, 2, 4, 7, 6, 8]
+def test_formarter():
+    tree = TernaryTree()
+    assert tree.formarter(None) == "|     "
+    assert tree.formarter(10) == "-  10 "
 
-    postorder_result = tree.postorder(tree.root)
-    assert postorder_result == [2, 4, 3, 6, 8, 7, 5]
+def test_array_reverse():
+    tree = TernaryTree()
+    values = [10, 5, 20, 5, 15, 25, 5]
+    tree.make_tree(values)
+    
+    arr_rev = tree.array_reverse(tree.root)
+    
+    expected = [(2, 25, 1), (1, 20, 1), (2, 15, 1), (0, 10, 1), (1, 5, 3)]
 
-    # except Exception as e:
-    #     errors.append(f"Erro na classe TernaryTree: {e}")
+    assert arr_rev == expected
 
-    # Verificar e reportar erros
-    if errors:
-        for error in errors:
-            print(error)
-    else:
-        print("Todos os testes passaram sem erros.")
+def test_array():
+    tree = TernaryTree()
+    values = [10, 5, 20, 5, 15, 25, 5]
+    tree.make_tree(values)
+    
+    arr = tree.array(tree.root)
 
-test_classes()
+    
+    expected = [(1, 5, 3), (0, 10, 1), (2, 15, 1), (1, 20, 1), (2, 25, 1)]
+    
+    assert arr == expected
+
+
+test_insert()
+test_search()
+test_father()
+test_delete()
+test_traversals()
+test_make_tree()
+test_show()
+test_formarter()
+test_array_reverse()
+test_array()
+
+print("Todos os testes passaram!")
