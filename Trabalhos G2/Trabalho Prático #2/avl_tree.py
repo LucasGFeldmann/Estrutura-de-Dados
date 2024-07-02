@@ -384,59 +384,6 @@ class AVLTree:
         
         return self.search(root.right, value)
 
-    def min_value_node(self, node):
-        """
-        Encontra o nó com o menor valor a partir de um nó dado.
-
-        Parameters:
-        -----------
-        node : Node
-            O nó a partir do qual a busca será realizada.
-
-        Returns:
-        --------
-        Node
-            O nó com o menor valor.
-        """
-        current = node
-        while current.left is not None:
-            current = current.left
-        return current
-
-    def delete(self, root, value):
-        """
-        Remove um nó da árvore.
-
-        Parameters:
-        -----------
-        root : Node
-            A raiz ou sub-raiz onde a remoção será realizada.
-        value : int, float
-            O valor do nó a ser removido.
-
-        Returns:
-        --------
-        Node
-            A nova raiz ou sub-raiz após a remoção e balanceamento.
-        """
-        if not root:
-            return root
-        
-        if value < root.value:
-            root.left = self.delete(root.left, value)
-        elif value > root.value:
-            root.right = self.delete(root.right, value)
-        else:
-            if root.left is None:
-                return root.right
-            elif root.right is None:
-                return root.left
-            
-            temp = self.min_value_node(root.right)
-            root.value = temp.value
-            root.right = self.delete(root.right, temp.value)
-        
-        return self.balance(root)
 
     def __repr__(self) -> str:
         """

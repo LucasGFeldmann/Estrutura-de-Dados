@@ -32,36 +32,6 @@ class TestAVLTree(unittest.TestCase):
         
         self.assertEqual(self.avl.get_balance(self.avl.root), 0)
 
-    def test_delete_leaf_node(self):
-        """Teste para deletar um nó folha."""
-        values = [10, 20, 5, 6]
-        for value in values:
-            self.avl.root = self.avl.insert(self.avl.root, value)
-        
-        self.avl.root = self.avl.delete(self.avl.root, 6)
-        inorder_result = self.avl.inorder(self.avl.root)
-        self.assertEqual(inorder_result, [5, 10, 20])
-
-    def test_delete_node_with_one_child(self):
-        """Teste para deletar um nó com um filho."""
-        values = [10, 20, 5, 6]
-        for value in values:
-            self.avl.root = self.avl.insert(self.avl.root, value)
-        
-        self.avl.root = self.avl.delete(self.avl.root, 5)
-        inorder_result = self.avl.inorder(self.avl.root)
-        self.assertEqual(inorder_result, [6, 10, 20])
-
-    def test_delete_node_with_two_children(self):
-        """Teste para deletar um nó com dois filhos."""
-        values = [10, 20, 5, 6, 15]
-        for value in values:
-            self.avl.root = self.avl.insert(self.avl.root, value)
-        
-        self.avl.root = self.avl.delete(self.avl.root, 10)
-        inorder_result = self.avl.inorder(self.avl.root)
-        self.assertEqual(inorder_result, [5, 6, 15, 20])
-
     def test_search(self):
         """Teste para a busca de um valor."""
         values = [10, 20, 5, 6, 15]
@@ -71,15 +41,6 @@ class TestAVLTree(unittest.TestCase):
         result = self.avl.search(self.avl.root, 15)
         self.assertIsNotNone(result)
         self.assertEqual(result.value, 15)
-
-    def test_min_value_node(self):
-        """Teste para encontrar o nó com o menor valor."""
-        values = [10, 20, 5, 6, 15]
-        for value in values:
-            self.avl.root = self.avl.insert(self.avl.root, value)
-        
-        min_node = self.avl.min_value_node(self.avl.root)
-        self.assertEqual(min_node.value, 5)
 
     def test_height(self):
         """Teste para calcular a altura de um nó."""

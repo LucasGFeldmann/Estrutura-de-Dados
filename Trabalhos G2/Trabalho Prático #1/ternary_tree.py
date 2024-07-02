@@ -190,7 +190,10 @@ class TernaryTree:
         """
         if node == root:
             raise Exception("Node não pode ser o root")
+        elif node == None:
+            raise Exception("Valor nao encontrado")
         
+        # Retorna o pai
         if node == root.right or node == root.left or node == root.middle:
             return root
 
